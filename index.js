@@ -24,12 +24,21 @@ async function run() {
 
     const database = client.db("bicycle_mart");
     const productsCollection = database.collection("products");
+    const usersCollection = database.collection("users");
 
     //GET API (Fetch all products from database)
     app.get("/products", async (req, res) => {
       const cursor = productsCollection.find({});
       const products = await cursor.toArray();
       res.send(products);
+    });
+
+    //POST API (add user inside database)
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      console.log(result);
+      res.json(result);
     });
   } finally {
     //await client.close();

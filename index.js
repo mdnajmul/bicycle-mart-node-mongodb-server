@@ -21,7 +21,16 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    console.log("Database Connect");
+
+    const database = client.db("bicycle_mart");
+    const productsCollection = database.collection("products");
+
+    //GET API (Fetch all products from database)
+    app.get("/products", async (req, res) => {
+      const cursor = productsCollection.find({});
+      const products = await cursor.toArray();
+      res.send(products);
+    });
   } finally {
     //await client.close();
   }

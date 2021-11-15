@@ -25,6 +25,7 @@ async function run() {
     const database = client.db("bicycle_mart");
     const productsCollection = database.collection("products");
     const usersCollection = database.collection("users");
+    const productBookingCollection = database.collection("orders");
 
     //GET API (Fetch all products from database)
     app.get("/products", async (req, res) => {
@@ -100,6 +101,34 @@ async function run() {
         _id: ObjectId(req.params.id),
       });
       res.send(result);
+    });
+
+    //get all order
+    app.get("/allOrders", async (req, res) => {
+      const result = await productBookingCollection.find({}).toArray();
+      res.send(result);
+    });
+
+    // delete order
+    app.delete("/delteOrder/:id", async (req, res) => {
+      const result = await productBookingCollection.deleteOne({
+        _id: ObjectId(req.params.id),
+      });
+      res.send(result);
+    });
+
+    // update status
+    app.put("/updateStatus/:id", (req, res) => {
+      const id = req.params.id;
+      const updatedStatus = "shipped";
+      const filter = { _id: ObjectId(id) };
+      productBookingCollection
+        .updateOne(filter, {
+          $set: { status: updatedStatus },
+        })
+        .then((result) => {
+          res.send(result);
+        });
     });
   } finally {
     //await client.close();

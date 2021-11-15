@@ -104,9 +104,18 @@ async function run() {
       res.send(result);
     });
 
-    //get all order
+    //Get All Order
     app.get("/allOrders", async (req, res) => {
       const result = await productBookingCollection.find({}).toArray();
+      res.send(result);
+    });
+
+    // Get All MY Orders
+    app.get("/myOrders/:email", async (req, res) => {
+      const email = req.params.email;
+      const result = await productBookingCollection
+        .find({ email: email })
+        .toArray();
       res.send(result);
     });
 

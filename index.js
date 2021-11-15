@@ -93,6 +93,14 @@ async function run() {
           .json({ message: "you do not have access to make admin" });
       }
     });
+
+    // delete product
+    app.delete("/delteProduct/:id", async (req, res) => {
+      const result = await productsCollection.deleteOne({
+        _id: ObjectId(req.params.id),
+      });
+      res.send(result);
+    });
   } finally {
     //await client.close();
   }

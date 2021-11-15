@@ -39,10 +39,17 @@ async function run() {
       const query = { email: email };
       const user = await usersCollection.findOne(query);
       let isAdmin = false;
-      if (user?.role === "admin") {
+      const role = user.role ? "admin" : "";
+      if (role) {
         isAdmin = true;
       }
       res.json({ admin: isAdmin });
+    });
+
+    //Add Products
+    app.post("/addproduct", async (req, res) => {
+      const result = await productsCollection.insertOne(req.body);
+      res.json(result);
     });
 
     //POST API (add user inside database)
@@ -65,6 +72,26 @@ async function run() {
         options
       );
       res.json(result);
+    });
+
+    app.put("/users/makeAdmin", async (req, res) => {
+      const userEmail = req.query.useremail;
+      const user = req.body;
+      if (user) {
+        const requesterAccount = await usersCollection.findOne({
+          email: userEmail,
+        });
+        if (requesterAccount.role === "admin") {
+          const filter = { email: user.email };
+          const updateDoc = { $set: { role: "admin" } };
+          const result = await usersCollection.updateOne(filter, updateDoc);
+          res.json(result);
+        }
+      } else {
+        res
+          .status(403)
+          .json({ message: "you do not have access to make admin" });
+      }
     });
   } finally {
     //await client.close();

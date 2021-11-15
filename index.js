@@ -26,6 +26,7 @@ async function run() {
     const productsCollection = database.collection("products");
     const usersCollection = database.collection("users");
     const productBookingCollection = database.collection("orders");
+    const reviewCollection = database.collection("reviews");
 
     //GET API (Fetch all products from database)
     app.get("/products", async (req, res) => {
@@ -129,6 +130,12 @@ async function run() {
         .then((result) => {
           res.send(result);
         });
+    });
+
+    //Add Review
+    app.post("/addreview", async (req, res) => {
+      const result = await reviewCollection.insertOne(req.body);
+      res.json(result);
     });
   } finally {
     //await client.close();

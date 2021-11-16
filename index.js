@@ -35,6 +35,14 @@ async function run() {
       res.send(products);
     });
 
+    // get single product
+    app.get("/products/:id", async (req, res) => {
+      const result = await productsCollection
+        .find({ _id: ObjectId(req.params.id) })
+        .toArray();
+      res.send(result[0]);
+    });
+
     //GET API (Fetch users by email)
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
@@ -104,6 +112,12 @@ async function run() {
       res.send(result);
     });
 
+    // cofirm order
+    app.post("/confirmOrder", async (req, res) => {
+      const result = await productBookingCollection.insertOne(req.body);
+      res.send(result);
+    });
+
     //Get All Order
     app.get("/allOrders", async (req, res) => {
       const result = await productBookingCollection.find({}).toArray();
@@ -139,6 +153,12 @@ async function run() {
         .then((result) => {
           res.send(result);
         });
+    });
+
+    //Fetch all reviews from database
+    app.get("/reviews", async (req, res) => {
+      const result = await reviewCollection.find({}).toArray();
+      res.send(result);
     });
 
     //Add Review

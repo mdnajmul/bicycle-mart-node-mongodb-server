@@ -4,7 +4,7 @@ This is server site for BicycleMart. It collects data from database and provide 
 
 ## Project Live Site
 
-- [Go To Here](https://serene-citadel-54805.herokuapp.com/).
+- [Go To Here]().
 
 ## Project Description
 

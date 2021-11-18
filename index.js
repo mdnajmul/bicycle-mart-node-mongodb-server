@@ -40,7 +40,8 @@ async function run() {
       const result = await productsCollection
         .find({ _id: ObjectId(req.params.id) })
         .toArray();
-      res.send(result[0]);
+      console.log(result);
+      res.send(result);
     });
 
     //GET API (Fetch users by email)

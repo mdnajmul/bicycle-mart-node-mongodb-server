@@ -178,6 +178,10 @@ app.get("/", (req, res) => {
   res.send("Bicycle Mart Node Server Connect.");
 });
 
+app.get("/hello", (req, res) => {
+  res.send("Hello Test");
+});
+
 app.listen(port, () => {
   console.log("Server running at port ", port);
 });
